@@ -20,20 +20,24 @@ app.set(
 app.set('view engine', 'ejs')
 
 // middleware
+app.use(function(req, res, next) {
+  req.time = new Date().toLocaleDateString()
+  next()
+})
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(
   express.static(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
-  )
-)
-app.use(methodOverride("_method"))
-
-// mounted routers
-app.use('/', indexRouter)
-app.use('/skills', skillsRouter)
-
+    )
+    )
+    app.use(methodOverride("_method"))
+    
+    // mounted routers
+    app.use('/', indexRouter)
+    app.use('/skills', skillsRouter)
+    
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
